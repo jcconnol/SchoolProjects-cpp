@@ -1,0 +1,99 @@
+#include "mystrtok.h"_delimiter(holder, delimiters);
+    char * tok_end = find_first_delimiter(tok_beg, delimiters);
+
+    if (tok_end == NULL || tok_beg == NULL) {
+        holder = '\0';
+        return &tok_beg[0];
+    }
+
+    if(tok_beg != NULL && tok_end == NULL){
+        return &tok_beg[0];
+    }
+    //changes end of token to null character
+    tok_end[0] = '\0';
+
+    //update holder
+    holder = &tok_end[1];
+
+    //return pointer to first element of token
+    return &tok_beg[0];
+}*/
+
+//function to find first delimiter
+char* find_first_delimiter(char *str, const char *delimiter) {
+    if (str == NULL || str == '\0') {
+        return NULL;
+    }
+    //goes through str and delimiter, sees if they're the same
+    for (int j = 0; str[j] != '\0'; j++) {
+        for (int i = 0; delimiter[i] != '\0'; i++) {
+            if (str[j] == delimiter[i]) {
+                //returns position of first delimiter
+                return &str[j];
+            }
+        }
+    }
+
+    return NULL;
+}
+
+//Function for finding first non delimiter
+char* find_first_non_delimiter(char * str, const char * delimiter) {
+    if (str == NULL || str == '\0') {
+        return NULL;
+    }
+    //goes through str and delim and sees if same
+    for (int j = 0; str[j] != '\0'; j++) {
+        bool del = false;
+        for (int i = 0; delimiter[i] != '\0'; i++) {
+            if (str[j] == delimiter[i]) {
+                //if same, exits loop for efficiency
+                del = true;
+                break;
+            }
+        }
+        //if not equal to any delim character then returns that position
+        if (!del) {
+            return &str[j];
+        }
+    }
+
+    return NULL;
+}
+
+char * mystrtok(char * str, const char * delimiters) {
+    //static variable to keep track of position
+    static char * holder;
+
+    //checking for if NULL or str passed in
+    if (str == NULL) {
+        if (holder == '\0') {
+            return NULL;
+        }
+    } else {
+        holder = str;
+    }
+
+    //find beginning and end of token
+    char * tok_beg = find_first_non_delimiter(holder, delimiters);
+    char * tok_end = find_first_delimiter(tok_beg, delimiters);
+
+    if (tok_end == NULL || tok_beg == NULL) {
+        holder = '\0';
+        return &tok_beg[0];
+    }
+
+    if(tok_beg != NULL && tok_end == NULL){
+        return &tok_beg[0];
+    }
+    //changes end of token to null character
+    tok_end[0] = '\0';
+
+    //update holder
+    holder = &tok_end[1];
+
+    //return pointer to first element of token
+    return &tok_beg[0];
+}
+
+
